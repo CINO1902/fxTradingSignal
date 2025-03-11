@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "815443067222",
+    "project_id": "fxsignaltrading-60b45",
+    "storage_bucket": "fxsignaltrading-60b45.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:815443067222:android:f468b1e285a25abde9d6f7",
+        "android_client_info": {
+          "package_name": "com.example.fx_trading_signal"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBV81xDXzXKqnCE9of-FLMyH5aucMD8coc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
