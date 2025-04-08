@@ -142,4 +142,29 @@ class AuthDatasourceImp implements AuthDatasource {
 
     return logotResult;
   }
+
+  @override
+  Future<RefreshTokenResult> refreshToken(email, refreshtoken) async {
+    RefreshTokenResult refreshTokenResult =
+        RefreshTokenResult(RefreshTokenResultState.isLoading, {});
+
+    final response = await httpService.request(
+      url: '/logout',
+      methodrequest: RequestMethod.post,
+      data: jsonEncode({"email": email, "refreshToken": refreshtoken}),
+    );
+    if (response.statusCode == 200) {
+      refreshTokenResult = RefreshTokenResult(RefreshTokenResultState.isData, {
+        "msg": response.data['msg'],
+        "accessToken": response.data['accessToken'],
+        "refreshToken": response.data['refreshToken']
+      });
+    } else {
+      // final decodedResponse = LoginResponse.fromJson(response.data);
+      refreshTokenResult = RefreshTokenResult(
+          RefreshTokenResultState.isError, response.data['msg']);
+    }
+
+    return refreshTokenResult;
+  }
 }

@@ -29,13 +29,13 @@ class SignalController with ChangeNotifier {
   Future<void> getsignal(
     WidgetRef ref,
   ) async {
-    final userId = ref.watch(getTraderController).userData['email'];
-    print(userId);
+    final token = ref.watch(getTraderController).userData['token'];
+    print(token);
     signalResponseResult = SignalResponseResult(
         SignalResponseResultState.isLoading, SignalResponse());
     notifyListeners();
 
-    final response = await signalRepository.getSignal(userId);
+    final response = await signalRepository.getSignal(token);
     signalResponseResult = response;
     ref.read(signalProvider.notifier).state =
         signalResponseResult.response.signals ?? [];
@@ -51,13 +51,13 @@ class SignalController with ChangeNotifier {
 
   Future<SignalResponseByIDResult> getsignalbyId(
       WidgetRef ref, String signalId) async {
-    final userId = ref.watch(getTraderController).userData['email'];
-    print(userId);
+    final token = ref.watch(getTraderController).userData['token'];
+    print(token);
     signalResponsebyIdResult = SignalResponseByIDResult(
         SignalResponseByIDResultState.isLoading, SignalById());
     notifyListeners();
 
-    final response = await signalRepository.getSignalbyId(userId, signalId);
+    final response = await signalRepository.getSignalbyId(token, signalId);
     signalResponsebyIdResult = response;
     notifyListeners();
     // ref.read(signalProvider.notifier).state =
@@ -81,13 +81,7 @@ class SignalController with ChangeNotifier {
       signals[index] = newSignal;
       _newSignalAdded = true;
       message = '${signals[index].signalName} have been adjusted';
-      // Option 2: Alternatively, update only specific fields:
-      // signals[index] = signals[index].copyWith(
-      //     signalName: newSignal.signalName,
-      //     stopLoss: newSignal.stopLoss,
-      //     takeProfit: newSignal.takeProfit
-      //     // add other fields as needed
-      //     );
+     
       notifyListeners();
     } else {
       print(newSignal);

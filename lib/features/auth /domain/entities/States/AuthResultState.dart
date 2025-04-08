@@ -57,3 +57,33 @@ class CompleteProfileResult {
 }
 
 enum CompleteProfileState { isLoading, isError, isData, isEmpty, networkissue }
+
+class ImageUploadResult {
+  final ImageUploadResultStates state;
+  final Map response;
+
+  ImageUploadResult(this.state, this.response);
+}
+
+enum ImageUploadResultStates {
+  isLoading,
+  isError,
+  isData,
+  isEmpty,
+  networkissue
+}
+
+class RefreshTokenResult {
+  final RefreshTokenResultState state;
+  final Map response;
+
+  RefreshTokenResult(this.state, this.response);
+}
+
+enum RefreshTokenResultState {
+  isLoading,
+  isError,
+  isData,
+  isEmpty,
+  networkissue
+}

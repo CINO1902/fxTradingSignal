@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fx_trading_signal/features/chat/presentation/provider/chatProvider.dart';
 import 'package:fx_trading_signal/features/getSIgnals/domain/entities/SignalResponse.dart';
 import 'package:fx_trading_signal/features/getSIgnals/domain/usecases/signalStates.dart';
 import 'package:fx_trading_signal/features/getTraders/presentation/widgets/signalCardShimmer.dart';
@@ -40,6 +41,9 @@ class _homeState extends ConsumerState<home> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       ref.read(signalController).getsignal(ref);
       ref.read(notificationproviderController).getNotificationn();
+      ref
+          .read(chatProviderController)
+          .getConvoId(ref.watch(getTraderController).userData['token'], ref);
     });
   }
 

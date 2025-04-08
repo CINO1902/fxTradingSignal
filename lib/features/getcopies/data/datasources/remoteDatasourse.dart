@@ -17,17 +17,14 @@ class CopyTradeDatasouceImp implements CopyTradeDatasouce {
   CopyTradeDatasouceImp(this.httpService);
 
   @override
-  Future<GetCopyResult> getCopy(userId) async {
+  Future<GetCopyResult> getCopy(token) async {
     GetCopyResult getCopyResult =
         GetCopyResult(GetCopyResultState.isLoading, GetCopyResponse());
 
     final response = await httpService.request(
-      url: '/getCopy',
-      methodrequest: RequestMethod.post,
-      data: jsonEncode({
-        "userId": userId,
-      }),
-    );
+        url: '/getCopy',
+        methodrequest: RequestMethod.postWithToken,
+        authtoken: token);
 
     if (response.statusCode == 200) {
       final decodedResponse = GetCopyResponse.fromJson(response.data);
@@ -48,15 +45,15 @@ class CopyTradeDatasouceImp implements CopyTradeDatasouce {
   }
 
   @override
-  Future<AddCopyResult> addCopy(signalId, userId) async {
+  Future<AddCopyResult> addCopy(signalId, token) async {
     AddCopyResult addCopyResult =
         AddCopyResult(AddCopyResultState.isLoading, AddCopyResponse());
     final response = await httpService.request(
       url: '/addCopy',
-      methodrequest: RequestMethod.post,
+      methodrequest: RequestMethod.postWithToken,
+      authtoken: token,
       data: jsonEncode({
         "signalId": signalId,
-        "userId": userId,
       }),
     );
     final decodedResponse = AddCopyResponse.fromJson(response.data);

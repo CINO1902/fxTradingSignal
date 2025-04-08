@@ -64,6 +64,7 @@ class DioService implements HttpService {
     required RequestMethod methodrequest,
     Map<String, dynamic>? params,
     CancelToken? cancelToken,
+    String? authtoken,
     dynamic data,
   }) async {
     Response response;
@@ -76,6 +77,28 @@ class DioService implements HttpService {
         response = await dio.patch(url, data: data);
       } else if (methodrequest == RequestMethod.put) {
         response = await dio.put(url, data: params);
+      } else if (methodrequest == RequestMethod.postWithToken) {
+        response = await dio.post(
+          url,
+          data: data,
+          cancelToken: cancelToken,
+          options: Options(
+            headers: {
+              'Authorization': 'Bearer $authtoken',
+            },
+          ),
+        );
+      } else if (methodrequest == RequestMethod.getWithToken) {
+        response = await dio.get(
+          url,
+          data: data,
+          cancelToken: cancelToken,
+          options: Options(
+            headers: {
+              'Authorization': 'Bearer $authtoken',
+            },
+          ),
+        );
       } else {
         response = await dio.get(url,
             queryParameters: params, cancelToken: cancelToken);

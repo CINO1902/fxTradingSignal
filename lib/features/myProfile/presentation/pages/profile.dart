@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fx_trading_signal/features/auth%20/presentation/provider/auth_provider.dart';
+import 'package:fx_trading_signal/features/myProfile/domain/usecases/isoStringConverter.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -79,32 +80,34 @@ class _ProfileState extends ConsumerState<Profile> {
                     ),
                   ),
                 ),
-                Gap(15),
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 20),
-                  color: Colors.white,
-                  height: 50,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          SvgPicture.asset('assets/svg/crown.svg'),
-                          Gap(20),
-                          Text(
-                            'Pro Member',
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          )
-                        ],
-                      ),
-                      Text(
-                        'Valid Until March 21st 2025',
-                        style: TextStyle(fontSize: 10),
+                ref.watch(getTraderController).userData['planId'] != ""
+                    ? Container(
+                        margin: EdgeInsets.only(top: 15, bottom: 10),
+                        padding: EdgeInsets.symmetric(horizontal: 20),
+                        color: Colors.white,
+                        height: 50,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: [
+                                SvgPicture.asset('assets/svg/crown.svg'),
+                                Gap(20),
+                                Text(
+                                  'Pro Member',
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                )
+                              ],
+                            ),
+                            Text(
+                              'Valid Until ${formatDateFromISO(ref.watch(getTraderController).userData['dateExpired'])}',
+                              style: TextStyle(fontSize: 10),
+                            )
+                          ],
+                        ),
                       )
-                    ],
-                  ),
-                ),
-                Gap(25),
+                    : SizedBox.shrink(),
+                Gap(15),
                 Container(
                     padding: EdgeInsets.symmetric(horizontal: 20),
                     color: Colors.white,
@@ -118,9 +121,19 @@ class _ProfileState extends ConsumerState<Profile> {
                       ),
                     )),
                 Gap(5),
-                ProfileActions('assets/svg/setting-2.svg', 'Account Settings'),
+                GestureDetector(
+                    onTap: () {
+                      context.push('/accountSettings');
+                    },
+                    child: ProfileActions(
+                        'assets/svg/setting-2.svg', 'Account Settings')),
                 Gap(3),
-                ProfileActions('assets/svg/wallet.svg', 'Choose Plan'),
+                GestureDetector(
+                    onTap: () {
+                      context.push('/plans');
+                    },
+                    child:
+                        ProfileActions('assets/svg/wallet.svg', 'Choose Plan')),
                 Gap(3),
                 ProfileActions('assets/svg/notification.svg', 'Notification'),
                 Gap(15),
@@ -137,7 +150,12 @@ class _ProfileState extends ConsumerState<Profile> {
                       ),
                     )),
                 Gap(5),
-                ProfileActions('assets/svg/24-support.svg', 'Help Center'),
+                GestureDetector(
+                    onTap: () {
+                      context.push('/helpandsupports');
+                    },
+                    child: ProfileActions(
+                        'assets/svg/24-support.svg', 'Help Center')),
                 Gap(3),
                 ProfileActions(
                     'assets/svg/setting-2.svg', 'Privacy and Policy'),

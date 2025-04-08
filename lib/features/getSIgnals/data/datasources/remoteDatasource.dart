@@ -14,16 +14,14 @@ class SignalDatasourceImp implements SignalDatasource {
   SignalDatasourceImp(this.httpService);
 
   @override
-  Future<SignalResponseResult> getSignal(email) async {
+  Future<SignalResponseResult> getSignal(accesstoken) async {
     SignalResponseResult signalResponseResult = SignalResponseResult(
         SignalResponseResultState.isLoading, SignalResponse());
 
     final response = await httpService.request(
         url: '/getSignals',
-        methodrequest: RequestMethod.post,
-        data: jsonEncode({
-          "userId": email,
-        }));
+        methodrequest: RequestMethod.postWithToken,
+        authtoken: accesstoken);
 
     if (response.statusCode == 200) {
       final decodedResponse = SignalResponse.fromJson(response.data);
@@ -44,14 +42,14 @@ class SignalDatasourceImp implements SignalDatasource {
   }
 
   @override
-  Future<SignalResponseByIDResult> getSignalbyId(email, id) async {
+  Future<SignalResponseByIDResult> getSignalbyId(accesstoken, id) async {
     SignalResponseByIDResult signalResponseResult = SignalResponseByIDResult(
         SignalResponseByIDResultState.isLoading, SignalById());
 
     final response = await httpService.request(
-      url: '/getSignalsbyId?userId=$email&signalId=$id',
-      methodrequest: RequestMethod.get,
-    );
+        url: '/getSignalsbyId?signalId=$id',
+        methodrequest: RequestMethod.getWithToken,
+        authtoken: accesstoken);
 
     if (response.statusCode == 200) {
       final decodedResponse = SignalById.fromJson(response.data);

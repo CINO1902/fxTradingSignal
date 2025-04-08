@@ -1,4 +1,4 @@
-enum RequestMethod { post, get, put, delete, patch }
+enum RequestMethod { post, get, put, delete, patch , postWithToken, getWithToken}
 enum NetworkExceptionType {
   badRequest('Bad request'),
   noInternetConnection('No internet connection'),

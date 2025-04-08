@@ -15,6 +15,7 @@ abstract class HttpService {
     required RequestMethod methodrequest,
     Map<String, dynamic>? params,
     CancelToken cancelToken,
+    String? authtoken,
     dynamic data,
   });
 }

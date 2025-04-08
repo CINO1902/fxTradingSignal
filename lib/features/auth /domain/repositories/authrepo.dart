@@ -17,6 +17,7 @@ abstract class AuthRepository {
   Future<LogoutResult> logout(logout);
   Future<GetOtpResult> requestOtp(email);
   Future<VerifyOtpResult> verifyemail(email, otp);
+  Future<RefreshTokenResult> refreshToken(email, refreshtoken);
   Future<CompleteProfileResult> completeprofile(String email, String imageurl,
       bool allowNotification, String tradeExperience);
 }
@@ -33,10 +34,15 @@ class AuthRepositoryImp implements AuthRepository {
       registerResult = await authDatasource.createacount(createaccount);
     } catch (e) {
       log(e.toString());
-      NetworkException exp = e as NetworkException;
-      final message = exp.errorMessage ?? e.message;
-      registerResult =
-          RegisterResult(RegisterState.isError, RegisterResponse(msg: message));
+      if (e.runtimeType == NetworkException) {
+        NetworkException exp = e as NetworkException;
+        final message = exp.errorMessage ?? e.message;
+        registerResult = RegisterResult(
+            RegisterState.isError, RegisterResponse(msg: message));
+      } else {
+        registerResult = RegisterResult(RegisterState.isError,
+            RegisterResponse(msg: "Something Went Wrong "));
+      }
     }
     return registerResult;
   }
@@ -140,5 +146,30 @@ class AuthRepositoryImp implements AuthRepository {
       }
     }
     return logotResult;
+  }
+
+  @override
+  Future<RefreshTokenResult> refreshToken(email, refreshtoken) async {
+    RefreshTokenResult refreshTokenResult =
+        RefreshTokenResult(RefreshTokenResultState.isLoading, {});
+
+    try {
+      refreshTokenResult =
+          await authDatasource.refreshToken(email, refreshtoken);
+    } catch (e) {
+      if (e.runtimeType == NetworkException) {
+        NetworkException exp = e as NetworkException;
+
+        final message = exp.errorMessage ?? e.message;
+        refreshTokenResult = RefreshTokenResult(
+            RefreshTokenResultState.isError, {"msg": message});
+      } else {
+        log(e.toString());
+        print(e);
+        refreshTokenResult = RefreshTokenResult(
+            RefreshTokenResultState.isError, {"msg": 'Something went wrong'});
+      }
+    }
+    return refreshTokenResult;
   }
 }

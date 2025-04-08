@@ -8,8 +8,8 @@ import '../../../../core/exceptions/network_exception.dart';
 import '../../data/repositories/signalRepo.dart';
 
 abstract class SignalRepository {
-  Future<SignalResponseResult> getSignal(email);
-  Future<SignalResponseByIDResult> getSignalbyId(email, id);
+  Future<SignalResponseResult> getSignal(accesstoken);
+  Future<SignalResponseByIDResult> getSignalbyId(accesstoken, id);
 }
 
 class SignalRepositoryImp implements SignalRepository {
@@ -17,12 +17,12 @@ class SignalRepositoryImp implements SignalRepository {
   SignalRepositoryImp(this.signalDatasource);
 
   @override
-  Future<SignalResponseResult> getSignal(email) async {
+  Future<SignalResponseResult> getSignal(accesstoken) async {
     SignalResponseResult signalResponseResult = SignalResponseResult(
         SignalResponseResultState.isLoading, SignalResponse());
 
     try {
-      signalResponseResult = await signalDatasource.getSignal(email);
+      signalResponseResult = await signalDatasource.getSignal(accesstoken);
     } catch (e) {
       log(e.toString());
       NetworkException exp = e as NetworkException;
@@ -34,12 +34,12 @@ class SignalRepositoryImp implements SignalRepository {
   }
 
   @override
-  Future<SignalResponseByIDResult> getSignalbyId(email, id) async {
+  Future<SignalResponseByIDResult> getSignalbyId(accesstoken, id) async {
     SignalResponseByIDResult signalResponseResult = SignalResponseByIDResult(
         SignalResponseByIDResultState.isLoading, SignalById());
 
     try {
-      signalResponseResult = await signalDatasource.getSignalbyId(email, id);
+      signalResponseResult = await signalDatasource.getSignalbyId(accesstoken, id);
     } catch (e) {
       log(e.toString());
       if (e.runtimeType == NetworkException) {

@@ -23,12 +23,12 @@ class CopyTradeContoller with ChangeNotifier {
       GetCopyResult(GetCopyResultState.isLoading, GetCopyResponse());
 
   Future<void> getCopy(WidgetRef ref) async {
-    final userId = ref.watch(getTraderController).userData['email'];
+    final token = ref.watch(getTraderController).userData['token'];
     getCopyResult =
         GetCopyResult(GetCopyResultState.isLoading, GetCopyResponse());
 
     notifyListeners();
-    final response = await copyTradeRepository.getCopy(userId);
+    final response = await copyTradeRepository.getCopy(token);
     getCopyResult = response;
     if (getCopyResult.response.copyTrade != null) {
       ref.read(copiedTradeProvider.notifier).state =
@@ -39,12 +39,12 @@ class CopyTradeContoller with ChangeNotifier {
   }
 
   Future<void> addCopy(WidgetRef ref, signalId) async {
-    final userId = ref.watch(getTraderController).userData['email'];
+    final token = ref.watch(getTraderController).userData['token'];
     addCopyResult =
         AddCopyResult(AddCopyResultState.isLoading, AddCopyResponse());
     ref.read(addCopyProvider(signalId).notifier).state = addCopyResult;
     notifyListeners();
-    final response = await copyTradeRepository.addCopy(signalId, userId);
+    final response = await copyTradeRepository.addCopy(signalId, token);
     addCopyResult = response;
 
     ref.read(addCopyProvider(signalId).notifier).state = addCopyResult;

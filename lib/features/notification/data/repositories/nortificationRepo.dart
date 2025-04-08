@@ -2,5 +2,5 @@ import 'package:fx_trading_signal/features/notification/domain/usecases/Notifica
 
 
 abstract class NotificationDatasource {
-  Future<NotificatonResult> getNotifcation(userId);
+  Future<NotificatonResult> getNotifcation(token);
 }

@@ -13,14 +13,14 @@ class NotificationDatasourceImp implements NotificationDatasource {
   NotificationDatasourceImp(this.httpService);
   @override
   @override
-  Future<NotificatonResult> getNotifcation(userId) async {
+  Future<NotificatonResult> getNotifcation(token) async {
     NotificatonResult notificatonResult =
         NotificatonResult(NotificationState.isEmpty, GetNotification());
 
     final response = await httpService.request(
-      url: '/getNotification?userID=$userId',
-      methodrequest: RequestMethod.get,
-    );
+        url: '/getNotification',
+        methodrequest: RequestMethod.getWithToken,
+        authtoken: token);
 
     if (response.statusCode == 200) {
       final decodedResponse = GetNotification.fromJson(response.data);

@@ -1,14 +1,18 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fx_trading_signal/core/utils/appColors.dart';
+import 'package:fx_trading_signal/features/auth%20/presentation/provider/auth_provider.dart';
 import 'package:fx_trading_signal/features/getSIgnals/presentation/pages/signals.dart';
 import 'package:fx_trading_signal/features/getSIgnals/presentation/provider/signalProvider.dart';
 import 'package:fx_trading_signal/features/getTraders/presentation/pages/home.dart';
 import 'package:fx_trading_signal/features/getcopies/presentation/pages/copies.dart';
 import 'package:fx_trading_signal/features/myProfile/presentation/pages/profile.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../constant/snackBar.dart';
 
@@ -21,12 +25,14 @@ class homelanding extends ConsumerStatefulWidget {
 
 class _homelandingState extends ConsumerState<homelanding> {
   int currentIndex = 0;
+  Timer? _tokenRefreshTimer;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     SmartDialog.dismiss();
+    _startTokenRefreshWatcher();
   }
 
   static const screens = [
@@ -35,6 +41,27 @@ class _homelandingState extends ConsumerState<homelanding> {
     Copies(),
     Profile(),
   ];
+
+  void _startTokenRefreshWatcher() {
+    _tokenRefreshTimer =
+        Timer.periodic(const Duration(minutes: 5), (timer) async {
+      final prefs = await SharedPreferences.getInstance();
+      final tokenExpireDateString = prefs.getString('tokenexpiredate');
+
+      if (tokenExpireDateString != null) {
+        final tokenExpireDate = DateTime.tryParse(tokenExpireDateString);
+        final now = DateTime.now();
+
+        if (tokenExpireDate != null) {
+          final minutesUntilExpire = tokenExpireDate.difference(now).inMinutes;
+          if (minutesUntilExpire <= 30) {
+            // Token is about to expire. Refresh the token.
+            await ref.read(authproviderController).refreshToken(ref);
+          }
+        }
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {

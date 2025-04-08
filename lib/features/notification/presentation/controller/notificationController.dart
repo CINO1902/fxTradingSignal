@@ -20,8 +20,8 @@ class NotificationController with ChangeNotifier {
         NotificatonResult(NotificationState.isLoading, GetNotification());
     notifyListeners();
     final pref = await SharedPreferences.getInstance();
-    final email = pref.getString('email') ?? '';
-    final response = await notificationRepository.getNotifcation(email);
+    final token = pref.getString('token') ?? '';
+    final response = await notificationRepository.getNotifcation(token);
     notificatonResult = response;
     notification = response.response.notifications ?? [];
     notifyListeners();

@@ -18,11 +18,16 @@ class homeController with ChangeNotifier {
   Map<String, dynamic> userData = {
     "firstname": "",
     "lastname": "",
+    "userId": "",
     "email": "",
     "imageUrl": "",
     "trading_experience": "",
     "phoneNumber": "",
-    "verified": ""
+    "verified": "",
+    "token": "",
+    "planId": "",
+    "dateExpired": "",
+    "datebought": ""
   };
 
   GetPricesResult getPricesResult =
@@ -37,19 +42,28 @@ class homeController with ChangeNotifier {
     final String? firstname = pref.getString("firstname");
     final String? lastname = pref.getString("lastname");
     final String? email = pref.getString("email");
+    final String? userId = pref.getString("userId");
     final String? imageUrl = pref.getString("imageUrl");
     final String? tradingExperience = pref.getString("trading_experience");
     final String? phoneNumber = pref.getString("phoneNumber");
+    final String? token = pref.getString("token");
     final bool? verified = pref.getBool("verified");
-
+    final String? planId = pref.getString("planId");
+    final String? dateExpired = pref.getString("dateExpired");
+    final String? datebought = pref.getString("datebought");
     userData.addAll({
       "firstname": firstname ?? "",
       "lastname": lastname ?? "",
       "email": email ?? "",
+      "userId": userId ?? "",
       "imageUrl": imageUrl ?? "",
       "trading_experience": tradingExperience ?? "",
       "phoneNumber": phoneNumber ?? "",
-      "verified": verified ?? ""
+      "verified": verified ?? "",
+      "token": token ?? "",
+      "planId": planId ?? "",
+      "dateExpired": dateExpired ?? "",
+      "datebought": datebought ?? ""
     });
     notifyListeners();
     print(userData); // Check if the data is stored correctly

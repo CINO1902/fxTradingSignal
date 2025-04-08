@@ -8,6 +8,7 @@ abstract class AuthDatasource {
   Future<LogoutResult> logout(logout);
   Future<GetOtpResult> requestOtp(email);
   Future<VerifyOtpResult> verifyemail(email, otp);
+  Future<RefreshTokenResult> refreshToken(email, refreshtoken);
   Future<CompleteProfileResult> completeprofile(String email, String imageurl,
       bool allowNotification, String tradeExperience);
 }

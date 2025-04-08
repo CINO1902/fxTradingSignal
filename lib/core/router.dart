@@ -3,17 +3,21 @@ import 'dart:core';
 import 'package:flutter/material.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:fx_trading_signal/core/customTransition.dart';
+import 'package:fx_trading_signal/features/Pricing/presentation/pages/plans.dart';
 import 'package:fx_trading_signal/features/auth%20/presentation/pages/completeProfile.dart';
 import 'package:fx_trading_signal/features/auth%20/presentation/pages/login.dart';
 import 'package:fx_trading_signal/features/auth%20/presentation/pages/otpVerification.dart';
 import 'package:fx_trading_signal/features/auth%20/presentation/pages/registration.dart';
 import 'package:fx_trading_signal/features/auth%20/presentation/pages/youAreSet.dart';
+import 'package:fx_trading_signal/features/chat/presentation/pages/chatUi.dart';
 import 'package:fx_trading_signal/features/getTraders/presentation/pages/landingPage.dart';
 import 'package:fx_trading_signal/features/getTraders/presentation/pages/signalDetails.dart';
 import 'package:fx_trading_signal/features/notification/presentation/pages/notification.dart';
 import 'package:go_router/go_router.dart';
 
 import '../features/init/presentation/pages/initScreen.dart';
+import '../features/myProfile/presentation/pages/accountSettings.dart';
+import '../features/myProfile/presentation/pages/helpAndSupport.dart';
 import '../features/notification/presentation/pages/signalDetailsNotifcation.dart';
 
 class AppRouter {
@@ -141,6 +145,56 @@ class AppRouter {
                 context: context,
                 state: state,
                 child: NotificationPage(),
+              )),
+      GoRoute(
+          path: '/accountSettings',
+          name: 'accountSettings',
+          builder: (context, state) {
+            return Accountsettings();
+          },
+          pageBuilder: (context, state) => buildPageWithDefaultTransition<void>(
+                context: context,
+                state: state,
+                child: Accountsettings(),
+              )),
+      GoRoute(
+          path: '/plans',
+          name: 'plans',
+          builder: (context, state) {
+            return Plans();
+          },
+          pageBuilder: (context, state) => buildPageWithDefaultTransition<void>(
+                context: context,
+                state: state,
+                child: Plans(),
+              )),
+      GoRoute(
+          path: '/helpandsupports',
+          name: 'helpandsupports',
+          builder: (context, state) {
+            return Helpandsupport();
+          },
+          pageBuilder: (context, state) => buildPageWithDefaultTransition<void>(
+                context: context,
+                state: state,
+                child: Helpandsupport(),
+              )),
+      GoRoute(
+          path: '/chatUi',
+          name: 'chatUi',
+          builder: (context, state) {
+            return ChatUI(
+              UnreadMessage: (state.extra as Map)['UnreadMessage'],
+              timeslastmessage: (state.extra as Map)['timeslastmessage'],
+            );
+          },
+          pageBuilder: (context, state) => buildPageWithDefaultTransition<void>(
+                context: context,
+                state: state,
+                child: ChatUI(
+                  UnreadMessage: (state.extra as Map)['UnreadMessage'],
+                  timeslastmessage: (state.extra as Map)['timeslastmessage'],
+                ),
               )),
       GoRoute(
           path: '/signalDetails',
